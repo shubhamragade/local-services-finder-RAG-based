@@ -1,107 +1,163 @@
-# Local Services RAG Assistant
+# 🔍 Local Services RAG Assistant
 
-This is a **Retrieval-Augmented Generation (RAG)** project to help users find **local services** (like electricians, plumbers, carpenters) near a specific area. It uses **LangChain**, **ChromaDB**, **HuggingFace embeddings**, and **ChatGroq LLM**.
-
----
-
-## Features
-
-- Load local service data from CSV files (dummy data for Pune city).
-- Generate embeddings for documents and store them in a vector database (ChromaDB).
-- Retrieve top-N relevant nearby services based on **category** and **distance**.
-- Answer user queries using retrieved documents with a large language model (LLM).
-- Returns a clear answer, or **“No nearby service found”** if nothing matches.
+A **Retrieval-Augmented Generation (RAG)** project that helps users find **local services** — like electricians, plumbers, or carpenters — near a specific area using **LangChain**, **ChromaDB**, **HuggingFace embeddings**, and **ChatGroq LLM**. 🧠⚡
 
 ---
 
-## Project Structure
+## 🌟 Features
 
-├── data/ # CSV files containing local services
-│ ├── services_1.csv
-│ ├── services_2.csv
-│ └── services_3.csv
+✅ Load local service data from CSV files (dummy data for Pune city).
+✅ Generate embeddings for documents and store them in a **vector database (ChromaDB)**.
+✅ Retrieve top-N relevant nearby services based on **category** and **distance**.
+✅ Answer user queries using **retrieved documents + LLM**.
+✅ Responds clearly — returns **“No nearby service found”** when nothing matches. 🙅‍♂️
+
+---
+
+## 🧱 Project Structure
+
+```
+├── data/                   # CSV files containing local services
+│   ├── services_1.csv
+│   ├── services_2.csv
+│   └── services_3.csv
+│
 ├── src/
-│ ├── app.py # Main script to run RAG assistant
-│ └── vector.py # VectorDB class for Chroma embeddings and search
-├── chroma_store/ # Persisted ChromaDB embeddings (auto-generated)
+│   ├── app.py              # Main script to run RAG assistant
+│   └── vector.py           # VectorDB class for embeddings & retrieval
+│
+├── chroma_store/           # Persisted ChromaDB embeddings (auto-generated)
+│
 ├── requirements.txt
 └── README.md
->>>>>>> de72f2f (added update README.md)
+```
 
+---
 
-## Sample CSV Format
+## 🧾 Sample CSV Format
 
-Each CSV file should have the following columns:
+| name       | category    | area          | contact    | details       | distance |
+| ---------- | ----------- | ------------- | ---------- | ------------- | -------- |
+| ABC Shop   | Electrician | Shivaji Nagar | 1234567890 | 24/7 service  | 2.5      |
+| XYZ Repair | Plumber     | XYZ Area      | 9876543210 | Fast response | 4.0      |
 
-| name       | category     | area          | contact     | details        | distance |
-|------------|-------------|---------------|------------|----------------|---------|
-| ABC Shop   | Electrician | Shivaji Nagar | 1234567890 | 24/7 service   | 2.5     |
-| XYZ Repair | Plumber     | XYZ Area      | 9876543210 | Fast response  | 4.0     |
+> ⚠️ **Note:** `distance` is in kilometers.
 
-> **Note:** `distance` is in kilometers.
+---
 
+## ⚙️ Installation
 
-## Installation
-
-1. Clone the repository:
+### 1️⃣ Clone the repository
 
 ```bash
 git clone <repo_url>
 cd rag-local-services
-Create a virtual environment:
+```
 
-bash
+### 2️⃣ Create a virtual environment
 
+```bash
 python -m venv venv
 # Linux/macOS
 source venv/bin/activate
 # Windows
 venv\Scripts\activate
-Install dependencies:
+```
 
-bash
+### 3️⃣ Install dependencies
 
+```bash
 pip install -r requirements.txt
-Create a .env file if needed (optional):
+```
 
-env
+### 4️⃣ (Optional) Add environment variables
 
+Create a `.env` file if you have API keys or environment settings.
+
+```
 # Example
-# API_KEY=<your_key_if_required>
-Usage
-Run the RAG assistant:
+API_KEY=<your_api_key_if_required>
+```
 
-bash
+---
+
+## 🚀 Usage
+
+Run the assistant:
+
+```bash
 python src/app.py
-Type your questions about local services, for example:
+```
 
+Then ask questions like 👇
 
+```
 Question: electrician near Shivaji Nagar
-Sample Output:
+```
 
+### 🧩 Sample Output
 
+```
 Here are the nearest electrician services near Shivaji Nagar:
 
-1. ABC Electric -> 24/7 service (Distance: 2.5 km)
-2. XYZ Electric -> Fast response (Distance: 3.2 km)
-3. PQR Electric -> Affordable (Distance: 4.8 km)
+1. ABC Electric → 24/7 service (Distance: 2.5 km)
+2. XYZ Electric → Fast response (Distance: 3.2 km)
+3. PQR Electric → Affordable (Distance: 4.8 km)
+```
+
 To exit, type:
 
-bash
+```bash
+exit
+```
 
-The assistant will:
+---
 
-Search the vector database for top nearby services matching the query.
+## 🧠 How It Works
 
-Answer using retrieved documents.
+1. Loads service data from multiple CSVs inside `data/`.
+2. Generates **sentence embeddings** using `all-MiniLM-L6-v2`.
+3. Stores embeddings in **ChromaDB** (persistent vector store).
+4. On user query:
 
-Show the relevant documents used for the answer.
+   * Uses **semantic search** to find top-matching services.
+   * Optionally filters by category and distance.
+   * Combines context with user query.
+   * Passes to **ChatGroq LLM** for natural-language response.
 
-Notes
-Uses ChatGroq LLM.
+---
 
-Embeddings generated with all-MiniLM-L6-v2 model.
+## 🧩 Tech Stack
 
-Supports distance filtering and category-based retrieval.
+* 🦜 **LangChain** — for RAG pipeline and query orchestration.
+* 🧮 **ChromaDB** — fast local vector storage.
+* 🤗 **HuggingFace Embeddings** — `all-MiniLM-L6-v2`.
+* ⚙️ **ChatGroq LLM** — lightweight large language model for reasoning.
+* 📄 **Pandas** — for data loading and manipulation.
 
-CSV files in data/ are automatically loaded and added to the vector database.
+---
+
+## 💡 Notes
+
+* Automatically detects and merges all CSV files in `data/`.
+* Filters irrelevant results based on **distance threshold** and **category match**. 🧭
+* Returns simple JSON output — perfect for FastAPI or Streamlit integration.
+
+---
+
+## 🔮 Future Enhancements
+
+✨ Add Streamlit UI with search box and category filters.
+✨ Integrate live Google Maps API for location-based distance sorting.
+✨ Cache embeddings to reduce load time.
+✨ Add support for multilingual queries (Marathi, Hindi, etc.). 🌍
+
+---
+
+## 📜 License
+
+MIT License — free to use, modify, and share. 💖
+
+---
+
+Would you like me to add a **Streamlit interface** for interactive search (with category + area dropdowns and distance slider)? 🎛️
